@@ -34,5 +34,6 @@ define 'swinkar' do
   desc "Deploy files require to run to a Karaf instance"
   task :deploy_to_karaf do
     cp artifacts([project('swinkar').package(:bundle)]).collect { |a| a.invoke; a.to_s }, "#{KARAF_DIR}/deploy/"
+    cp_r Dir["#{_('src/main/dist')}/**"], KARAF_DIR
   end
 end
