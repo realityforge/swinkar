@@ -23,7 +23,6 @@ public class TopLevelMenu
   @Updated
   public void configUpdated( final Dictionary config )
   {
-    System.out.println( "TopLevelMenu.configUpdated" );
     setText( m_label );
   }
 }
