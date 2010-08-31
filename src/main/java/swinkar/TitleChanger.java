@@ -17,7 +17,6 @@ public class TitleChanger
   @Validate
   public void start()
   {
-    System.out.println( "TitleChanger.start" );
     final Runnable runnable = new Runnable()
     {
       public void run()
