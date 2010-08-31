@@ -14,6 +14,7 @@ repositories.remote << Buildr::Bnd.remote_repository
 repositories.remote << Buildr::Ipojo.remote_repository
 
 IPOJO_ANNOTATIONS = Buildr::Ipojo.annotation_artifact
+EVENT_ADMIN = 'org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.6.0'
 
 OSGI_CORE = 'org.apache.felix:org.osgi.core:jar:1.4.0'
 OSGI_COMPENDIUM = 'org.apache.felix:org.osgi.compendium:jar:1.4.0'
@@ -22,7 +23,7 @@ KARAF_DIR="/home/peter/apache-karaf-2.0.0/"
 
 desc 'Swinkar: OSGi/Swing test framework'
 define 'swinkar' do
-  compile.with OSGI_CORE, IPOJO_ANNOTATIONS, OSGI_COMPENDIUM
+  compile.with OSGI_CORE, IPOJO_ANNOTATIONS, OSGI_COMPENDIUM, EVENT_ADMIN
   project.ipojoize!
   project.version = '1.0'
 
