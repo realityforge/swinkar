@@ -2,10 +2,12 @@ package swinkar;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 
@@ -19,6 +21,9 @@ public class MainFrame extends JFrame
 
   @Property( name = "height", value = "800" )
   private int m_height = 800;
+
+  @Requires(proxy = false)
+  private JMenuBar m_menuBar;
 
   @Subscriber( name = "MainFrame.Title", topics = "MainFrame/Title", data_key = "title", data_type = "java.lang.String" )
   public void updateTitle( final String title )
@@ -34,7 +39,9 @@ public class MainFrame extends JFrame
     getContentPane().setPreferredSize( new Dimension( m_width, m_height ) );
     getContentPane().setSize( new Dimension( m_width, m_height ) );
     getContentPane().add( new JPanel() );
+    setJMenuBar( m_menuBar );
     pack();
+    validate();
     setTitle( m_title );
     setVisible( true );
   }
