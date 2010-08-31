@@ -32,7 +32,6 @@ public class MainMenuBar
   public void onArrival( final ServiceReference reference )
     throws Exception
   {
-    System.out.println( "MainMenuBar.onArrival" );
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
     addMenu( menu, displayRank );
@@ -42,7 +41,6 @@ public class MainMenuBar
   public void onDeparture( final ServiceReference reference )
     throws Exception
   {
-    System.out.println( "MainMenuBar.onDeparture" );
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
     removeMenu( menu );
   }
@@ -51,7 +49,6 @@ public class MainMenuBar
   public void onModification( final ServiceReference reference )
     throws Exception
   {
-    System.out.println( "MainMenuBar.onModification" );
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
     removeMenu( menu );
@@ -60,35 +57,39 @@ public class MainMenuBar
 
   private void addMenu( final JMenu menu, final int displayRank )
   {
-    System.out.println( "addMenu('" + menu.getText() + "'," + displayRank + ")" );
-    int index = 0;
+    int index = -1;
     final int count = getMenuCount();
     for( int i = 0; i < count; i++ )
     {
       final JMenu other = getMenu( i );
       final int otherRank = m_menuRanks.get( other );
-      index = i;
+      System.out.println( "other('" + other.getText() + "'," + otherRank + ") index = " + i );
       if( otherRank > displayRank )
       {
+        index = i;
         break;
       }
+      index = i + 1;
     }
+    System.out.println( "addMenu('" + menu.getText() + "'," + displayRank + ") index = " + index );
     add( menu, index );
     m_menuRanks.put( menu, displayRank );
   }
 
   private void removeMenu( final JMenu menu )
   {
-    System.out.println( "removeMenu('" + menu.getText() + "')" );
     final int count = getMenuCount();
+    int index = -1;
     for( int i = 0; i < count; i++ )
     {
       if( getMenu( i ) == menu )
       {
-        remove( i );
+        index = i;
         break;
       }
     }
+    System.out.println( "removeMenu('" + menu.getText() + "') index = " + index );
+    remove( index );
     m_menuRanks.remove( menu );
   }
 }
