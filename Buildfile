@@ -32,11 +32,6 @@ define 'swinkar' do
 
   desc "Deploy files require to run to a Karaf instance"
   task :deploy_to_karaf do
-    cp artifacts([JML,
-                  project('connection').package(:bundle),
-                  project('com.sun.messaging.mq.imq').package(:bundle),
-                  project('routes').package(:bundle)]).collect { |a| a.to_s },
-       "#{KARAF_DIR}/deploy/"
-    cp_r Dir["#{_('etc/dist')}/**"], KARAF_DIR
+    cp artifacts([project('swinkar').package(:bundle)]).collect { |a| a.invoke; a.to_s }, "#{KARAF_DIR}/deploy/"
   end
 end
