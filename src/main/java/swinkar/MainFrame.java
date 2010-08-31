@@ -20,10 +20,11 @@ public class MainFrame extends JFrame
   @Property( name = "height", value = "800" )
   private int m_height = 800;
 
-  @Subscriber( name = "MainFrame.Title", topics = "MainFrame.Title", data_key = "title", data_type = "java.lang.String" )
+  @Subscriber( name = "MainFrame.Title", topics = "MainFrame/Title", data_key = "title", data_type = "java.lang.String" )
   public void updateTitle( final String title )
   {
     m_title = title;
+    setTitle( m_title );
   }
 
   @Validate
