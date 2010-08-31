@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ipojo>
+  <instance component="swinkar.MainFrame"/>
+  <instance component="swinkar.TitleChanger"/>
+</ipojo>
