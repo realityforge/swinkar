@@ -18,3 +18,5 @@ This is project for testing out swing in an OSGi context.
   Regardless the syntax should be checked at ipojoizer time and fail then if not valid.
 * Provides have to be parent classes or interfaces not the class itself ... seems like an arbitrary
   decision???
+* ipojoization futzes with super calls - breaks scenario where JPanel passes parameter to superclass.
+  The bytecode wont verify as extra parameter passed to ctor.
