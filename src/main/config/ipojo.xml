@@ -25,6 +25,7 @@
   <instance component="swinkar.TitleChanger"/>
   <instance component="swinkar.EdtVerifier"/>
   <instance component="swinkar.ui.coordination.BackPanel"/>
+  <instance component="swinkar.ui.ScreenManager"/>
 
   <instance component="swinkar.TopLevelMenu">
     <property name="label" value="File"/>

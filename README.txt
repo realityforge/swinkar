@@ -16,3 +16,5 @@ This is project for testing out swing in an OSGi context.
   - @Component.factory_method
 * @Updated annotated methods should not need to have Dictionary parameter - should be optional.
   Regardless the syntax should be checked at ipojoizer time and fail then if not valid.
+* Provides have to be parent classes or interfaces not the class itself ... seems like an arbitrary
+  decision???

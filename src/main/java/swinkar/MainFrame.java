@@ -1,12 +1,9 @@
 package swinkar;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
