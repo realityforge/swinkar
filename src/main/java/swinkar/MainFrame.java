@@ -11,8 +11,9 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 
-@Component( immediate = true, managedservice = "MainFrame", factory_method = "create")
-public class MainFrame extends JFrame
+@Component( architecture = true, immediate = true, managedservice = "MainFrame" )
+public class MainFrame
+  extends JFrame
 {
   @Property( name = "width", value = "640" )
   private int m_width = 640;
@@ -22,18 +23,6 @@ public class MainFrame extends JFrame
 
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
-
-  public static MainFrame create()
-  {
-    return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
-    {
-      @Override
-      public MainFrame call() throws Exception
-      {
-        return new MainFrame();
-      }
-    } );
-  }
 
   @Subscriber( name = "MainFrame.Title",
                topics = "MainFrame/Title",
