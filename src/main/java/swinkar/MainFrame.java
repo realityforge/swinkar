@@ -1,11 +1,8 @@
 package swinkar;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.HeadlessException;
 import java.util.concurrent.Callable;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
@@ -30,14 +27,10 @@ public class MainFrame
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
 
-  private BundleContext m_bundleContext;
+  @Requires( proxy = false, filter = "(role=ScreenManager)")
+  private JPanel m_screenManager;
 
-  public MainFrame( final BundleContext bundleContext )
-  {
-    m_bundleContext = bundleContext;
-  }
-
-  public static MainFrame create( final BundleContext bundleContext )
+  public static MainFrame create()
   {
     return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
     {
@@ -46,9 +39,9 @@ public class MainFrame
         throws Exception
       {
         System.out.println( "Constructing a MainFrame" );
-        return new MainFrame( bundleContext );
+        return new MainFrame();
       }
-    });
+    } );
   }
 
   @Subscriber( name = "MainFrame.Title",
@@ -79,7 +72,7 @@ public class MainFrame
         setPreferredSize( new Dimension( m_width, m_height ) );
         setSize( new Dimension( m_width, m_height ) );
         setJMenuBar( m_menuBar );
-        setContentPane( new ScreenManager( m_bundleContext ) );
+        setContentPane( m_screenManager );
         pack();
         setTitle( "My Initial Title" );
         MainFrame.this.repaint();
