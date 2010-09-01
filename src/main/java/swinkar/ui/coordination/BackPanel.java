@@ -11,7 +11,7 @@ import org.apache.felix.ipojo.annotations.ServiceProperty;
 import swinkar.SwinkarUtil;
 
 @Component( factory_method = "create", architecture = true, immediate = true, managedservice = "BackPanel" )
-@Provides( specifications = { BackPanel.class } )
+@Provides( specifications = { JPanel.class } )
 public class BackPanel
   extends JPanel
 {
