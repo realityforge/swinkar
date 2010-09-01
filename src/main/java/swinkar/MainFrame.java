@@ -28,12 +28,10 @@ public class MainFrame
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
 
-  public MainFrame( final BundleContext bundleContext )
-  {
-    setContentPane( new ScreenManager( bundleContext ) );
-  }
+  @Requires( proxy = false, filter = "(role=ScreenManager)")
+  private JPanel m_screenManager;
 
-  public static MainFrame create( final BundleContext bundleContext )
+  public static MainFrame create( )
   {
     return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
     {
@@ -42,7 +40,7 @@ public class MainFrame
         throws Exception
       {
         System.out.println( "Constructing a MainFrame" );
-        return new MainFrame( bundleContext );
+        return new MainFrame( );
       }
     });
   }
@@ -75,6 +73,7 @@ public class MainFrame
         setPreferredSize( new Dimension( m_width, m_height ) );
         setSize( new Dimension( m_width, m_height ) );
         setJMenuBar( m_menuBar );
+        setContentPane( m_screenManager );
         pack();
         setTitle( "My Initial Title" );
         MainFrame.this.repaint();

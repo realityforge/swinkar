@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import swinkar.SwinkarUtil;
 
-@Component( immediate = true )
+@Component( immediate = true, factory_method = "create")
 @Wbp( filter = "(&(objectClass=javax.swing.JPanel)(role=Screen)(screenName=*))",
       onArrival = "addScreen",
       onDeparture = "removeScreen" )
@@ -28,10 +28,23 @@ public class ScreenManager
 
   public ScreenManager( final BundleContext bundleContext )
   {
-    super();
     m_bundleContext = bundleContext;
     setLayout( new CardLayout() );
-    add( new JLabel( "Welcome!" ), "Welcome" );
+  }
+
+   public static ScreenManager create( final BundleContext bundleContext )
+  {
+    return SwinkarUtil.invokeAndWait( new Callable<ScreenManager>()
+    {
+      @Override
+      public ScreenManager call()
+        throws Exception
+      {
+        System.out.println( "Constructing a ScreenManager" );
+        final ScreenManager screenManager = new ScreenManager( bundleContext );
+        return screenManager;
+      }
+    } );
   }
 
   public void addScreen( final ServiceReference reference )
@@ -39,9 +52,14 @@ public class ScreenManager
     System.out.println( "Adding a screen: " );
     final JComponent screen = (JComponent) m_bundleContext.getService( reference );
     final String screenName = (String) reference.getProperty( "screenName" );
-    System.out.println( "Screen: " + screenName );
-    add( screen, screenName );
-    ( (CardLayout) getLayout() ).show( this, screenName );
+    SwinkarUtil.invokeAndWait( new Runnable() {
+      @Override
+      public void run()
+      {
+        ScreenManager.this.add( screen, screenName );
+        ( (CardLayout) ScreenManager.this.getLayout() ).show( ScreenManager.this, screenName );
+      }
+    });
   }
 
   public void removeScreen( final ServiceReference reference )
