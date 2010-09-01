@@ -1,6 +1,7 @@
 package swinkar;
 
 import java.awt.Dimension;
+import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import org.apache.felix.ipojo.annotations.Component;
@@ -10,7 +11,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 
-@Component( immediate = true, managedservice = "MainFrame" )
+@Component( immediate = true, managedservice = "MainFrame", factory_method = "create")
 public class MainFrame extends JFrame
 {
   @Property( name = "width", value = "640" )
@@ -21,6 +22,18 @@ public class MainFrame extends JFrame
 
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
+
+  public static MainFrame create()
+  {
+    return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
+    {
+      @Override
+      public MainFrame call() throws Exception
+      {
+        return new MainFrame();
+      }
+    } );
+  }
 
   @Subscriber( name = "MainFrame.Title",
                topics = "MainFrame/Title",
