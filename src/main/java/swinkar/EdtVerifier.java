@@ -55,11 +55,13 @@ public class EdtVerifier
 
   public final boolean isFullCheck()
   {
+    System.out.println( "EdtVerifier.isFullCheck" );
     return m_fullCheck;
   }
 
   public final void setFullCheck( final boolean fullCheck )
   {
+    System.out.println( "EdtVerifier.setFullCheck" );
     m_fullCheck = fullCheck;
     m_repaintManager.setFullCheck( m_fullCheck );
   }
