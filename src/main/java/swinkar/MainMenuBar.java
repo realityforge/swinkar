@@ -2,15 +2,17 @@ package swinkar;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.SwingUtilities;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-@Component( immediate = true, architecture = true, managedservice = "MenuBar")
+@Component( immediate = true, architecture = true, managedservice = "MenuBar", factory_method = "create" )
 @Provides( specifications = { JMenuBar.class } )
 @Wbp( filter = "(objectClass=javax.swing.JMenu)",
       onArrival = "onArrival",
@@ -21,6 +23,18 @@ public class MainMenuBar
 {
   private BundleContext m_bundleContext;
   private final Map<JMenu, Integer> m_menuRanks = new HashMap<JMenu, Integer>();
+
+  public static MainMenuBar create( final BundleContext bundleContext )
+  {
+    return SwinkarUtil.invokeAndWait( new Callable<MainMenuBar>()
+    {
+      @Override
+      public MainMenuBar call() throws Exception
+      {
+        return new MainMenuBar( bundleContext );
+      }
+    } );
+  }
 
   public MainMenuBar( final BundleContext bundleContext )
   {
@@ -34,7 +48,14 @@ public class MainMenuBar
   {
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    addMenu( menu, displayRank );
+    final Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        addMenu( menu, displayRank );
+      }
+    };
+    SwinkarUtil.invokeAndWait( runnable );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
@@ -42,7 +63,14 @@ public class MainMenuBar
     throws Exception
   {
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
-    removeMenu( menu );
+    final Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        removeMenu( menu );
+      }
+    };
+    SwinkarUtil.invokeAndWait( runnable );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
@@ -51,8 +79,15 @@ public class MainMenuBar
   {
     final JMenu menu = (JMenu)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    removeMenu( menu );
-    addMenu( menu, displayRank );
+    Runnable runnable = new Runnable()
+    {
+      public void run()
+      {
+        removeMenu( menu );
+        addMenu( menu, displayRank );
+      }
+    };
+    SwingUtilities.invokeLater( runnable );
   }
 
   private void addMenu( final JMenu menu, final int displayRank )
@@ -73,6 +108,7 @@ public class MainMenuBar
     }
     System.out.println( "addMenu('" + menu.getText() + "'," + displayRank + ") index = " + index );
     add( menu, index );
+    revalidate();
     m_menuRanks.put( menu, displayRank );
   }
 
@@ -90,6 +126,7 @@ public class MainMenuBar
     }
     System.out.println( "removeMenu('" + menu.getText() + "') index = " + index );
     remove( index );
+    revalidate();
     m_menuRanks.remove( menu );
   }
 }
