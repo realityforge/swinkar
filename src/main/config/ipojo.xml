@@ -23,6 +23,7 @@
   <instance component="swinkar.MainFrame"/>
   <instance component="swinkar.MainMenuBar"/>
   <instance component="swinkar.TitleChanger"/>
+  <instance component="swinkar.EdtVerifier"/>
 
   <instance component="swinkar.TopLevelMenu">
     <property name="label" value="File"/>
