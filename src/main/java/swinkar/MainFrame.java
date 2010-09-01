@@ -1,17 +1,23 @@
 package swinkar;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.util.concurrent.Callable;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
+import org.osgi.framework.BundleContext;
+import swinkar.ui.ScreenManager;
 
-@Component( architecture = true, immediate = true, managedservice = "MainFrame" )
+@Component( architecture = true, immediate = true, managedservice = "MainFrame", factory_method = "create" )
 public class MainFrame
   extends JFrame
 {
@@ -23,6 +29,27 @@ public class MainFrame
 
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
+
+  private BundleContext m_bundleContext;
+
+  public MainFrame( final BundleContext bundleContext )
+  {
+    m_bundleContext = bundleContext;
+  }
+
+  public static MainFrame create( final BundleContext bundleContext )
+  {
+    return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
+    {
+      @Override
+      public MainFrame call()
+        throws Exception
+      {
+        System.out.println( "Constructing a MainFrame" );
+        return new MainFrame( bundleContext );
+      }
+    });
+  }
 
   @Subscriber( name = "MainFrame.Title",
                topics = "MainFrame/Title",
@@ -48,9 +75,11 @@ public class MainFrame
     {
       public void run()
       {
+        System.out.println( "Running a main frame!" );
         setPreferredSize( new Dimension( m_width, m_height ) );
         setSize( new Dimension( m_width, m_height ) );
         setJMenuBar( m_menuBar );
+        setContentPane( new ScreenManager( m_bundleContext ) );
         pack();
         setTitle( "My Initial Title" );
         MainFrame.this.repaint();

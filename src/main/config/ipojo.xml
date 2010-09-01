@@ -24,6 +24,7 @@
   <instance component="swinkar.MainMenuBar"/>
   <instance component="swinkar.TitleChanger"/>
   <instance component="swinkar.EdtVerifier"/>
+  <instance component="swinkar.ui.coordination.BackPanel"/>
 
   <instance component="swinkar.TopLevelMenu">
     <property name="label" value="File"/>
@@ -39,4 +40,5 @@
     <property name="label" value="First"/>
     <property name="displayRank" value="1"/>
   </instance>
+
 </ipojo>

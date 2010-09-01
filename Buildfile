@@ -19,7 +19,7 @@ EVENT_ADMIN = 'org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.
 OSGI_CORE = 'org.apache.felix:org.osgi.core:jar:1.4.0'
 OSGI_COMPENDIUM = 'org.apache.felix:org.osgi.compendium:jar:1.4.0'
 
-KARAF_DIR="/home/peter/apache-karaf-2.0.1-SNAPSHOT/"
+KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 
 desc 'Swinkar: OSGi/Swing test framework'
 define 'swinkar' do
