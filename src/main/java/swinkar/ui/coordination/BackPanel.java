@@ -10,7 +10,7 @@ import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
 import swinkar.SwinkarUtil;
 
-@Component( factory_method = "create", architecture = true, immediate = true, managedservice = "BackPanel" )
+@Component( factory_method = "create", architecture = true, immediate = true )
 @Provides( specifications = { BackPanel.class } )
 public class BackPanel
   extends JPanel
@@ -26,7 +26,7 @@ public class BackPanel
       @Override
       public BackPanel call()
       {
-        System.out.println( "Constructing a ScreenContainer" );
+        System.out.println( "Constructing a Coordination.BackPanel" );
         final BackPanel screenContainer = new BackPanel();
         screenContainer.setLayout( new BorderLayout() );
         screenContainer.add( new JLabel( "left" ), BorderLayout.WEST );

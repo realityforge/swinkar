@@ -13,13 +13,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import swinkar.SwinkarUtil;
 
-@Component
-/*
-// TODO: Filter to only things that claim to be screens, not JComponents.  Do we have to do marker interfaces, should be able to it with a property
-@Wbp( filter = "(objectClass=javax.swing.JComponent)",
-      onArrival = "addScreen",
+@Component( immediate = true, architecture = true, managedservice = "ScreenManager"  )
+@Wbp( filter = "(objectClass=swinkar.ui.coordination.BackPanel)",
+      onArrival = "removeScreen",
       onDeparture = "removeScreen" )
-*/
 public class ScreenManager
   extends JPanel
 {
@@ -27,9 +24,10 @@ public class ScreenManager
 
   public ScreenManager( final BundleContext bundleContext )
   {
-    super( new CardLayout( ) );
+    super();
     m_bundleContext = bundleContext;
-    System.out.println( "We have a screen manager" );
+    setLayout( new CardLayout() );
+    add( new JLabel("Welcome!"), "Welcome");
   }
 
   public void addScreen(final ServiceReference reference)

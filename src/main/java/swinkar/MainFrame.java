@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.util.concurrent.Callable;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -30,11 +31,9 @@ public class MainFrame
   @Requires( proxy = false )
   private JMenuBar m_menuBar;
 
-  private BundleContext m_bundleContext;
-
   public MainFrame( final BundleContext bundleContext )
   {
-    m_bundleContext = bundleContext;
+    setContentPane( new ScreenManager( bundleContext ) );
   }
 
   public static MainFrame create( final BundleContext bundleContext )
@@ -75,11 +74,10 @@ public class MainFrame
     {
       public void run()
       {
-        System.out.println( "Running a main frame!" );
+        System.out.println( "Running a main frame" );
         setPreferredSize( new Dimension( m_width, m_height ) );
         setSize( new Dimension( m_width, m_height ) );
         setJMenuBar( m_menuBar );
-        setContentPane( new ScreenManager( m_bundleContext ) );
         pack();
         setTitle( "My Initial Title" );
         MainFrame.this.repaint();
