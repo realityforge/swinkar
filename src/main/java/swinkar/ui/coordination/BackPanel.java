@@ -5,7 +5,6 @@ import java.util.concurrent.Callable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
 import swinkar.SwinkarUtil;
@@ -15,9 +14,11 @@ import swinkar.SwinkarUtil;
 public class BackPanel
   extends JPanel
 {
-  @Property( name = "screenName", value = "Coordination" )
-  @ServiceProperty( name = "screenName" )
+  @ServiceProperty( name = "screenName", value = "Coordination" )
   private String m_screenName;
+
+  @ServiceProperty( name = "role", value = "Screen" )
+  private String m_role;
 
   public static BackPanel create()
   {
