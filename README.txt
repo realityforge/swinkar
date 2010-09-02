@@ -20,3 +20,23 @@ This is project for testing out swing in an OSGi context.
   decision???
 * ipojoization futzes with super calls - breaks scenario where JPanel passes parameter to superclass.
   The bytecode wont verify as extra parameter passed to ctor.
+* Should be able to declare constant service proeprties and not have a field to define it. This could
+  be done as an annotation on the class.
+* Should be able to restrict ServiceProperty to a particular service
+* Maybe define a class level @Provides such as
+
+@Provides{
+{
+  @Service{type=Foo.class, properties ={@ServiceProperty{name="x", value="1"}, control = "myControlVaR"},
+  @Service{type=Bar.class, properties ={@ServiceProperty{name="x", value="2"}},
+}
+)
+
+== TODO
+
+* Investigate the substance themes as possible base for skinning / branding app.
+  https://substance.dev.java.net/see.html
+* Consider using FEST to perform GUI tests
+  See http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
+* Tests fail if non EDT access to repaint manager during testing.
+  See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
