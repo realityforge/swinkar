@@ -20,6 +20,17 @@ This is project for testing out swing in an OSGi context.
   decision???
 * ipojoization futzes with super calls - breaks scenario where JPanel passes parameter to superclass.
   The bytecode wont verify as extra parameter passed to ctor.
+* Should be able to declare constant service proeprties and not have a field to define it. This could
+  be done as an annotation on the class.
+* Should be able to restrict ServiceProperty to a particular service
+* Maybe define a class level @Provides such as
+
+@Provides{
+{
+  @Service{type=Foo.class, properties ={@ServiceProperty{name="x", value="1"}, control = "myControlVaR"},
+  @Service{type=Bar.class, properties ={@ServiceProperty{name="x", value="2"}},
+}
+)
 
 == TODO
 
