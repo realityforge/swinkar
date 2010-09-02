@@ -1,29 +1,28 @@
 package swinkar;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.SwingUtilities;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import swinkar.ui.MenuContainer;
+import swinkar.ui.MenuSupport;
 
 @Component( immediate = true, architecture = true, managedservice = "MenuBar", factory_method = "create" )
 @Provides( specifications = { JMenuBar.class } )
-@Wbp( filter = "(objectClass=javax.swing.JMenu)",
+@Wbp( filter = "(&(objectClass=javax.swing.JMenu)(parentMenu=TopLevelMenu))",
       onArrival = "onArrival",
       onDeparture = "onDeparture",
       onModification = "onModification" )
 public class MainMenuBar
   extends JMenuBar
+  implements MenuContainer
 {
-  private BundleContext m_bundleContext;
-  private final Map<JMenu, Integer> m_menuRanks = new HashMap<JMenu, Integer>();
+  private final MenuSupport m_menuSupport;
 
+  @SuppressWarnings( { "UnusedDeclaration" } )
   public static MainMenuBar create( final BundleContext bundleContext )
   {
     return SwinkarUtil.invokeAndWait( new Callable<MainMenuBar>()
@@ -39,94 +38,38 @@ public class MainMenuBar
   public MainMenuBar( final BundleContext bundleContext )
   {
     System.out.println( "MainMenuBar.MainMenuBar" );
-    m_bundleContext = bundleContext;
+     m_menuSupport = new MenuSupport( bundleContext, this );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
   public void onArrival( final ServiceReference reference )
     throws Exception
   {
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
-    final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    final Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        addMenu( menu, displayRank );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    m_menuSupport.onArrival( reference );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
   public void onDeparture( final ServiceReference reference )
     throws Exception
   {
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
-    final Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        removeMenu( menu );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    m_menuSupport.onDeparture( reference );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
   public void onModification( final ServiceReference reference )
     throws Exception
   {
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
-    final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        removeMenu( menu );
-        addMenu( menu, displayRank );
-      }
-    };
-    SwingUtilities.invokeLater( runnable );
+    m_menuSupport.onModification( reference );
   }
 
-  private void addMenu( final JMenu menu, final int displayRank )
+  @Override
+  public int getItemCount()
   {
-    int index = -1;
-    final int count = getMenuCount();
-    for( int i = 0; i < count; i++ )
-    {
-      final JMenu other = getMenu( i );
-      final int otherRank = m_menuRanks.get( other );
-      System.out.println( "other('" + other.getText() + "'," + otherRank + ") index = " + i );
-      if( otherRank > displayRank )
-      {
-        index = i;
-        break;
-      }
-      index = i + 1;
-    }
-    System.out.println( "addMenu('" + menu.getText() + "'," + displayRank + ") index = " + index );
-    add( menu, index );
-    revalidate();
-    m_menuRanks.put( menu, displayRank );
+    return getMenuCount();
   }
 
-  private void removeMenu( final JMenu menu )
+  public String getMenuId()
   {
-    final int count = getMenuCount();
-    int index = -1;
-    for( int i = 0; i < count; i++ )
-    {
-      if( getMenu( i ) == menu )
-      {
-        index = i;
-        break;
-      }
-    }
-    System.out.println( "removeMenu('" + menu.getText() + "') index = " + index );
-    remove( index );
-    revalidate();
-    m_menuRanks.remove( menu );
+    return "TopLevelMenu";
   }
 }

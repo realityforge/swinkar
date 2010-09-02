@@ -27,19 +27,32 @@
   <instance component="swinkar.ui.coordination.BackPanel"/>
   <instance component="swinkar.ui.ScreenManager"/>
 
-  <instance component="swinkar.TopLevelMenu">
+  <instance component="swinkar.DynamicMenu">
+    <property name="parentMenu" value="TopLevelMenu"/>
     <property name="label" value="File"/>
     <property name="displayRank" value="5"/>
+    <property name="menuId" value="Top.File"/>
   </instance>
 
-  <instance component="swinkar.TopLevelMenu">
-    <property name="label" value="System"/>
+  <instance component="swinkar.DynamicMenu">
+    <property name="parentMenu" value="TopLevelMenu"/>
+    <property name="label" value="Window"/>
     <property name="displayRank" value="15"/>
+    <property name="menuId" value="Top.Window"/>
   </instance>
 
-  <instance component="swinkar.TopLevelMenu">
+  <instance component="swinkar.DynamicMenu">
+    <property name="parentMenu" value="TopLevelMenu"/>
     <property name="label" value="First"/>
     <property name="displayRank" value="1"/>
+    <property name="menuId" value="Top.First"/>
+  </instance>
+
+  <instance component="swinkar.DynamicMenu">
+    <property name="parentMenu" value="Top.File"/>
+    <property name="label" value="Sub Menu"/>
+    <property name="displayRank" value="1"/>
+    <property name="menuId" value="File.Sub1"/>
   </instance>
 
 </ipojo>
