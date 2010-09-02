@@ -20,3 +20,12 @@ This is project for testing out swing in an OSGi context.
   decision???
 * ipojoization futzes with super calls - breaks scenario where JPanel passes parameter to superclass.
   The bytecode wont verify as extra parameter passed to ctor.
+
+== TODO
+
+* Investigate the substance themes as possible base for skinning / branding app.
+  https://substance.dev.java.net/see.html
+* Consider using FEST to perform GUI tests
+  See http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
+* Tests fail if non EDT access to repaint manager during testing.
+  See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
