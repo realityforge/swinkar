@@ -51,16 +51,27 @@
     <property name="displayRank" value="1"/>
   </instance>
 
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="File.Sub1"/>
+    <property name="label" value="Say Oink!"/>
+    <property name="displayRank" value="1"/>
+  </instance>
+
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="File.Sub1"/>
+    <property name="label" value="Say Moo!"/>
+    <property name="displayRank" value="2"/>
+  </instance>
+
   <instance component="swinkar.ui.menus.Separator">
     <property name="parentMenu" value="Top.File"/>
     <property name="displayRank" value="2"/>
   </instance>
 
-  <instance component="swinkar.ui.menus.Menu">
+  <instance component="swinkar.ui.menus.MenuItem">
     <property name="parentMenu" value="Top.File"/>
-    <property name="label" value="Sub Menu 2"/>
+    <property name="label" value="Shutdown"/>
     <property name="displayRank" value="3"/>
-    <property name="menuId" value="File.Sub2"/>
   </instance>
 
   <instance component="swinkar.ui.menus.Menu">
