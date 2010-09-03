@@ -24,7 +24,8 @@ public class MainFrame
   @Property( name = "height", value = "800" )
   private int m_height = 800;
 
-  @Requires( proxy = false )
+  //@Requires( proxy = false, filter = "")
+  @Requires( proxy = false, filter = "(&(objectClass=javax.swing.JMenuBar)(menuId=TopLevelMenu))")
   private JMenuBar m_menuBar;
 
   @Requires( proxy = false, filter = "(role=ScreenManager)")

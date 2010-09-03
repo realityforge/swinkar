@@ -1,12 +1,12 @@
-package swinkar.ui;
+package swinkar.ui.menus;
 
 import java.awt.Component;
 
 public interface MenuContainer
 {
-  int getItemCount();
+  int getMenuComponentCount();
 
-  Component getComponent( int i );
+  Component getMenuComponent( int i );
 
   Component add( Component menu, int index );
 

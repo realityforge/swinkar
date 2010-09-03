@@ -1,9 +1,9 @@
-package swinkar.ui;
+package swinkar.ui.menus;
 
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JMenu;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -27,7 +27,7 @@ public class MenuSupport
     {
       return;
     }
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
+    final JComponent menu = (JComponent)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
     final Runnable runnable = new Runnable()
     {
@@ -45,7 +45,7 @@ public class MenuSupport
     {
       return;
     }
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
+    final JComponent menu = (JComponent)m_bundleContext.getService( reference );
     final Runnable runnable = new Runnable()
     {
       public void run()
@@ -63,7 +63,7 @@ public class MenuSupport
     {
       return;
     }
-    final JMenu menu = (JMenu)m_bundleContext.getService( reference );
+    final JComponent menu = (JComponent)m_bundleContext.getService( reference );
     final int displayRank = (Integer)reference.getProperty( "displayRank" );
     Runnable runnable = new Runnable()
     {
@@ -79,10 +79,10 @@ public class MenuSupport
   private void addItem( final Component menu, final int displayRank )
   {
     int index = -1;
-    final int count = m_menu.getItemCount();
+    final int count = m_menu.getMenuComponentCount();
     for( int i = 0; i < count; i++ )
     {
-      final Component other = m_menu.getComponent( i );
+      final Component other = m_menu.getMenuComponent( i );
       final int otherRank = m_menuRanks.get( other );
       System.out.println( "other('" + other.getName() + "'," + otherRank + ") index = " + i );
       if( otherRank > displayRank )
@@ -100,11 +100,11 @@ public class MenuSupport
 
   private void removeItem( final Component menu )
   {
-    final int count = m_menu.getItemCount();
+    final int count = m_menu.getMenuComponentCount();
     int index = -1;
     for( int i = 0; i < count; i++ )
     {
-      if( m_menu.getComponent( i ) == menu )
+      if( m_menu.getMenuComponent( i ) == menu )
       {
         index = i;
         break;

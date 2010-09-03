@@ -1,7 +1,8 @@
-package swinkar;
+package swinkar.ui.menus;
 
 import java.util.Dictionary;
 import java.util.concurrent.Callable;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
@@ -11,16 +12,15 @@ import org.apache.felix.ipojo.annotations.Updated;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import swinkar.ui.MenuContainer;
-import swinkar.ui.MenuSupport;
+import swinkar.SwinkarUtil;
 
-@Component( immediate = true, managedservice = "TopLevelMenu", factory_method = "create" )
-@Provides( specifications = { JMenu.class } )
-@Wbp( filter = "(&(objectClass=javax.swing.JMenu)(parentMenu=*))",
+@Component( immediate = true, managedservice = "Menu", factory_method = "create" )
+@Provides( specifications = { JMenu.class, JComponent.class } )
+@Wbp( filter = "(&(objectClass=javax.swing.JComponent)(parentMenu=*))",
       onArrival = "onArrival",
       onDeparture = "onDeparture",
       onModification = "onModification" )
-public class DynamicMenu
+public class Menu
   extends JMenu
   implements MenuContainer
 {
@@ -39,25 +39,26 @@ public class DynamicMenu
   private int m_displayRank;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
+  @ServiceProperty( name = "menuId" )
   @Property( name = "menuId", mandatory = true )
   private String m_menuId;
 
   private final MenuSupport m_menuSupport;
 
-  public DynamicMenu( final BundleContext bundleContext )
+  public Menu( final BundleContext bundleContext )
   {
     m_menuSupport = new MenuSupport( bundleContext, this );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
-  public static DynamicMenu create( final BundleContext bundleContext )
+  public static Menu create( final BundleContext bundleContext )
   {
-    return SwinkarUtil.invokeAndWait( new Callable<DynamicMenu>()
+    return SwinkarUtil.invokeAndWait( new Callable<Menu>()
     {
       @Override
-      public DynamicMenu call() throws Exception
+      public Menu call() throws Exception
       {
-        return new DynamicMenu( bundleContext );
+        return new Menu( bundleContext );
       }
     } );
   }
