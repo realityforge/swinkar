@@ -26,7 +26,7 @@ public class Separator
   private int m_displayRank;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
-  public static Separator create( final BundleContext bundleContext )
+  public static Separator create( )
   {
     return SwinkarUtil.invokeAndWait( new Callable<Separator>()
     {
