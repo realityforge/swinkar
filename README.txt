@@ -41,3 +41,4 @@ This is project for testing out swing in an OSGi context.
   See http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
 * Tests fail if non EDT access to repaint manager during testing.
   See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
+* Update to ipojo 1.6.4 - fixes several of the bugs that cropped up during experimentation
