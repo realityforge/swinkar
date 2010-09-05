@@ -17,16 +17,13 @@ import swinkar.SwinkarUtil;
 public class MenuItem
   extends JMenuItem
 {
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @ServiceProperty( name = "parentMenu" )
   @Property( name = "parentMenu", mandatory = true )
   private String m_parentMenu;
 
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @Property( name = "label", mandatory = true )
   private String m_label;
 
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @Property( name = "displayRank", mandatory = true )
   @ServiceProperty( name = "displayRank" )
   private int m_displayRank;
@@ -44,7 +41,6 @@ public class MenuItem
     } );
   }
 
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @Updated
   public void configUpdated( final Dictionary config )
   {

@@ -15,12 +15,10 @@ import swinkar.SwinkarUtil;
 public class Separator
   extends JSeparator
 {
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @ServiceProperty( name = "parentMenu" )
   @Property( name = "parentMenu", mandatory = true )
   private String m_parentMenu;
 
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @Property( name = "displayRank", mandatory = true )
   @ServiceProperty( name = "displayRank" )
   private int m_displayRank;

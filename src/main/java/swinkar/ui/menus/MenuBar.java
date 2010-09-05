@@ -23,7 +23,6 @@ public class MenuBar
 {
   private final MenuSupport m_menuSupport;
 
-  @SuppressWarnings( { "UnusedDeclaration" } )
   @ServiceProperty( name = "menuId" )
   @Property( name = "menuId", mandatory = true )
   private String m_menuId;
