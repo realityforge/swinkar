@@ -32,6 +32,7 @@ This is project for testing out swing in an OSGi context.
   @Service{type=Bar.class, properties ={@ServiceProperty{name="x", value="2"}},
 }
 )
+* Unable to expose a interface twice - with different metadata. Need an id for each specification?
 
 == TODO
 
@@ -42,3 +43,4 @@ This is project for testing out swing in an OSGi context.
 * Tests fail if non EDT access to repaint manager during testing.
   See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
 * Update to ipojo 1.6.4 - fixes several of the bugs that cropped up during experimentation
+* Swing UI testing via http://www.ibm.com/developerworks/java/library/j-swingtest/
