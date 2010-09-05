@@ -26,6 +26,7 @@ define 'swinkar' do
   compile.with OSGI_CORE, IPOJO_ANNOTATIONS, OSGI_COMPENDIUM, EVENT_ADMIN
   project.ipojoize!
   project.version = '1.0'
+  ipr.template = _('src/etc/project-template.ipr')
 
   package(:bundle).tap do |bnd|
     bnd['Export-Package'] = "swinkar.*;version=#{version}"

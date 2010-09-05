@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="InspectionProjectProfileManager">
+    <profiles>
+      <profile version="1.0" is_locked="false">
+        <option name="myName" value="Project Default" />
+        <option name="myLocal" value="false" />
+        <inspection_tool class="UNUSED_SYMBOL" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="LOCAL_VARIABLE" value="true" />
+          <option name="FIELD" value="true" />
+          <option name="METHOD" value="true" />
+          <option name="CLASS" value="true" />
+          <option name="PARAMETER" value="true" />
+          <option name="REPORT_PARAMETER_FOR_PUBLIC_METHODS" value="true" />
+          <option name="INJECTION_ANNOS">
+            <value>
+              <list size="6">
+                <item index="0" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Component" />
+                <item index="1" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Property" />
+                <item index="2" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Provides" />
+                <item index="3" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.ServiceProperty" />
+                <item index="4" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Updated" />
+                <item index="5" class="java.lang.String" itemvalue="org.apache.felix.ipojo.handlers.event.Publisher" />
+              </list>
+            </value>
+          </option>
+        </inspection_tool>
+      </profile>
+    </profiles>
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+  </component>
+</project>
+
