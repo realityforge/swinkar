@@ -20,7 +20,7 @@
   xmlns:jmx="org.apache.felix.ipojo.jmx"
   >
 
-  <instance component="swinkar.MainFrame"/>
+  <instance component="swinkar.MainFrame" name="mainFrame"/>
   <instance component="swinkar.TitleChanger"/>
   <instance component="swinkar.EdtVerifier"/>
   <instance component="swinkar.ui.coordination.BackPanel"/>
@@ -84,6 +84,9 @@
     <property name="label" value="Shutdown"/>
     <property name="displayRank" value="3"/>
     <property name="actionCommand" value="shutdown"/>
+    <property name="requires.filters">
+      <property name="actionListener" value="(instance.name=mainFrame)"/>
+    </property>
   </instance>
 
   <instance component="swinkar.ui.menus.Menu">

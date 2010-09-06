@@ -1,6 +1,8 @@
 package swinkar;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
@@ -15,8 +18,10 @@ import org.osgi.framework.BundleContext;
 import swinkar.ui.ScreenManager;
 
 @Component( architecture = true, immediate = true, managedservice = "MainFrame", factory_method = "create" )
+@Provides( specifications = { ActionListener.class } )
 public class MainFrame
   extends JFrame
+  implements ActionListener
 {
   @Property( name = "width", value = "640" )
   private int m_width = 640;
@@ -95,5 +100,12 @@ public class MainFrame
       }
     };
     SwinkarUtil.invokeAndWait( runnable );
+  }
+
+  @Override
+  public void actionPerformed( final ActionEvent e )
+  {
+    setVisible( false );
+    dispose();
   }
 }
