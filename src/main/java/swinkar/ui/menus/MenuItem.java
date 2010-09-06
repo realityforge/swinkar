@@ -1,5 +1,6 @@
 package swinkar.ui.menus;
 
+import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.concurrent.Callable;
 import javax.swing.JComponent;
@@ -29,6 +30,12 @@ public class MenuItem
   @ServiceProperty( name = "displayRank" )
   private int m_displayRank;
 
+  @Property( name = "actionCommand", mandatory = true )
+  private String m_actionCommand;
+
+  @Requires( id = "actionListener", proxy = false, optional = true, filter="(match=nothing)" )
+  private ActionListener m_actionListener;
+
   @Requires( id = "preparer", proxy = false, optional = true, nullable = false, filter="(match=nothing)" )
   private MenuItemPreparer m_preparer;
 
@@ -52,7 +59,13 @@ public class MenuItem
     {
       public void run()
       {
+        setActionCommand( m_actionCommand );
         setText( m_label );
+        for ( ActionListener listener : getActionListeners() )
+        {
+          removeActionListener( listener );
+        }
+        addActionListener( m_actionListener );
       }
     };
     SwinkarUtil.invokeAndWait( runnable );

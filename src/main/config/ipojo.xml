@@ -56,8 +56,10 @@
     <property name="parentMenu" value="File.Sub1"/>
     <property name="label" value="Say Oink!"/>
     <property name="displayRank" value="1"/>
+    <property name="actionCommand" value="oink"/>
     <property name="requires.filters">
       <property name="preparer" value="(instance.name=oinkHandler)"/>
+      <property name="actionListener" value="(instance.name=oinkHandler)"/>
     </property>
   </instance>
 
@@ -65,8 +67,10 @@
     <property name="parentMenu" value="File.Sub1"/>
     <property name="label" value="Say Moo!"/>
     <property name="displayRank" value="2"/>
+    <property name="actionCommand" value="moo"/>
     <property name="requires.filters">
       <property name="preparer" value="(instance.name=oinkHandler)"/>
+      <property name="actionListener" value="(instance.name=oinkHandler)"/>
     </property>
   </instance>
 
@@ -79,6 +83,7 @@
     <property name="parentMenu" value="Top.File"/>
     <property name="label" value="Shutdown"/>
     <property name="displayRank" value="3"/>
+    <property name="actionCommand" value="shutdown"/>
   </instance>
 
   <instance component="swinkar.ui.menus.Menu">
