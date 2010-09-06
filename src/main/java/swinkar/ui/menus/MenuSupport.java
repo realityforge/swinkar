@@ -3,6 +3,7 @@ package swinkar.ui.menus;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import org.osgi.framework.BundleContext;
@@ -119,5 +120,17 @@ public class MenuSupport
   private boolean ignore( final ServiceReference reference )
   {
     return !m_menu.getMenuId().equals( reference.getProperty( "parentMenu" ) );
+  }
+
+  public void menuSelected()
+  {
+    final Set<Component> componentSet = m_menuRanks.keySet();
+    for ( Component component : componentSet )
+    {
+      if ( component instanceof MenuItem )
+      {
+        ( (MenuItem) component ).prepareForDisplay( m_menu );
+      }
+    }
   }
 }
