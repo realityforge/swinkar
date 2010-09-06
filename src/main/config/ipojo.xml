@@ -24,6 +24,7 @@
   <instance component="swinkar.TitleChanger"/>
   <instance component="swinkar.EdtVerifier"/>
   <instance component="swinkar.ui.coordination.BackPanel"/>
+  <instance component="swinkar.ui.coordination.CentralPanelHandler" name="oinkHandler"/>
   <instance component="swinkar.ui.ScreenManager"/>
 
   <instance component="swinkar.ui.menus.MenuBar">
@@ -51,16 +52,22 @@
     <property name="displayRank" value="1"/>
   </instance>
 
-  <instance component="swinkar.ui.menus.MenuItem">
+  <instance component="swinkar.ui.menus.MenuItem" name="oinkItem">
     <property name="parentMenu" value="File.Sub1"/>
     <property name="label" value="Say Oink!"/>
     <property name="displayRank" value="1"/>
+    <property name="requires.filters">
+      <property name="preparer" value="(instance.name=oinkHandler)"/>
+    </property>
   </instance>
 
-  <instance component="swinkar.ui.menus.MenuItem">
+  <instance component="swinkar.ui.menus.MenuItem" name="mooItem">
     <property name="parentMenu" value="File.Sub1"/>
     <property name="label" value="Say Moo!"/>
     <property name="displayRank" value="2"/>
+    <property name="requires.filters">
+      <property name="preparer" value="(instance.name=oinkHandler)"/>
+    </property>
   </instance>
 
   <instance component="swinkar.ui.menus.Separator">

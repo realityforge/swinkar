@@ -4,6 +4,8 @@ import java.util.Dictionary;
 import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
@@ -22,7 +24,7 @@ import swinkar.SwinkarUtil;
       onModification = "onModification" )
 public class Menu
   extends JMenu
-  implements MenuContainer
+  implements MenuContainer, MenuListener
 {
   @ServiceProperty( name = "parentMenu" )
   @Property( name = "parentMenu", mandatory = true )
@@ -44,6 +46,7 @@ public class Menu
   public Menu( final BundleContext bundleContext )
   {
     m_menuSupport = new MenuSupport( bundleContext, this );
+    addMenuListener( this );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
@@ -96,5 +99,21 @@ public class Menu
   public String getMenuId()
   {
     return m_menuId;
+  }
+
+  @Override
+  public void menuSelected( final MenuEvent e )
+  {
+    m_menuSupport.menuSelected();
+  }
+
+  @Override
+  public void menuDeselected( final MenuEvent e )
+  {
+  }
+
+  @Override
+  public void menuCanceled( final MenuEvent e )
+  {
   }
 }

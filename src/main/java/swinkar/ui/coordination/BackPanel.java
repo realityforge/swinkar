@@ -10,7 +10,7 @@ import org.apache.felix.ipojo.annotations.ServiceProperty;
 import swinkar.SwinkarUtil;
 
 @Component( factory_method = "create", architecture = true, immediate = true, managedservice = "BackPanel" )
-@Provides( specifications = { JPanel.class } )
+@Provides( specifications = { BackPanel.class, JPanel.class } )
 public class BackPanel
   extends JPanel
 {
@@ -19,6 +19,8 @@ public class BackPanel
 
   @ServiceProperty( name = "role", value = "Screen" )
   private String m_role;
+
+  private Boolean _isOink;
 
   public static BackPanel create()
   {
@@ -36,5 +38,27 @@ public class BackPanel
         return screenContainer;
       }
     } );
+  }
+
+  public Boolean isOinking()
+  {
+    return Boolean.TRUE == _isOink;
+  }
+
+  public Boolean isMooing()
+  {
+    return Boolean.FALSE == _isOink;
+  }
+
+  public void oink()
+  {
+    _isOink = Boolean.TRUE;
+    ( (JLabel) getComponent( 2 ) ).setText( "OINK!");
+  }
+
+  public void moo()
+  {
+    _isOink = Boolean.FALSE;
+    ( (JLabel) getComponent( 2 ) ).setText( "MOO!");
   }
 }

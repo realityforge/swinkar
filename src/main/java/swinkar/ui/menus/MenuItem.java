@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.annotations.Updated;
 import org.osgi.framework.BundleContext;
@@ -27,6 +28,9 @@ public class MenuItem
   @Property( name = "displayRank", mandatory = true )
   @ServiceProperty( name = "displayRank" )
   private int m_displayRank;
+
+  @Requires( id = "preparer", proxy = false, optional = true, nullable = false, filter="(match=nothing)" )
+  private MenuItemPreparer m_preparer;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
   public static MenuItem create( )
@@ -52,5 +56,18 @@ public class MenuItem
       }
     };
     SwinkarUtil.invokeAndWait( runnable );
+  }
+
+  // Whee - ugly method, not even sure we need it in the real app, but for now
+  // this provides a way to differentiate menu items.  Can't call it 'getLabel' as that
+  // clashes with the JMenuItem method of the same name.
+  public String getLabelProperty()
+  {
+    return m_label;
+  }
+
+  public MenuItemPreparer getPreparer()
+  {
+    return m_preparer;
   }
 }
