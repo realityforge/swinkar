@@ -129,11 +129,7 @@ public class MenuSupport
     {
       if ( component instanceof MenuItem )
       {
-        final MenuItemPreparer preparer = ( (MenuItem) component ).getPreparer();
-        if ( null != preparer )
-        {
-          preparer.prepareMenuItem( (MenuItem) component, m_menu );
-        }
+        ( (MenuItem) component ).prepareForDisplay( m_menu );
       }
     }
   }

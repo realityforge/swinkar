@@ -79,8 +79,11 @@ public class MenuItem
     return m_label;
   }
 
-  public MenuItemPreparer getPreparer()
+  public void prepareForDisplay( final MenuContainer menu )
   {
-    return m_preparer;
+    if ( null != m_preparer )
+    {
+      m_preparer.prepareMenuItem( this, menu );
+    }
   }
 }
