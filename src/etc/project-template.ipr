@@ -21,6 +21,8 @@
                 <item index="3" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.ServiceProperty" />
                 <item index="4" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Updated" />
                 <item index="5" class="java.lang.String" itemvalue="org.apache.felix.ipojo.handlers.event.Publisher" />
+                <item index="6" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Validate" />
+                <item index="7" class="java.lang.String" itemvalue="org.apache.felix.ipojo.annotations.Invalidate" />
               </list>
             </value>
           </option>
