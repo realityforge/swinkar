@@ -3,6 +3,9 @@ require 'buildr_iidea'
 require 'buildr_ipojo'
 require 'swung_weave_buildr'
 
+VERSION_NUMBER = "1.0.0"
+GROUP = "swinkar"
+
 repositories.remote << 'https://repository.apache.org/content/repositories/releases'
 repositories.remote << 'http://repository.springsource.com/maven/bundles/external'
 repositories.remote << 'http://repository.code-house.org/content/repositories/release' # OSGi - jmx RI
@@ -20,7 +23,8 @@ define 'swinkar' do
                :ipojo_eventadmin,
                Buildr::SwungWeave.api_artifact
   project.ipojoize!
-  project.version = '1.0'
+  project.version = VERSION_NUMBER
+  project.group = GROUP
   ipr.template = _('src/etc/project-template.ipr')
 
   compile { swung_weave_enhance }
