@@ -14,7 +14,11 @@ KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 
 desc 'Swinkar: OSGi/Swing test framework'
 define 'swinkar' do
-  compile.with :osgi_core, :osgi_compendium, Buildr::Ipojo.annotation_artifact, :ipojo_eventadmin
+  compile.with :osgi_core,
+               :osgi_compendium, 
+               Buildr::Ipojo.annotation_artifact,
+               :ipojo_eventadmin,
+               Buildr::SwungWeave.api_artifact
   project.ipojoize!
   project.version = '1.0'
   ipr.template = _('src/etc/project-template.ipr')
