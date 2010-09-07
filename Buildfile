@@ -1,10 +1,7 @@
-gem 'buildr-bnd', :version => '0.0.5'
-gem 'buildr-iidea', :version => '0.0.7'
-gem 'buildr-ipojo', :version => '0.0.1'
-
 require 'buildr_bnd'
 require 'buildr_iidea'
 require 'buildr_ipojo'
+require 'swung_weave_buildr'
 
 repositories.remote << 'https://repository.apache.org/content/repositories/releases'
 repositories.remote << 'http://repository.springsource.com/maven/bundles/external'
@@ -13,20 +10,16 @@ repositories.remote << 'http://repository.code-house.org/content/repositories/re
 repositories.remote << Buildr::Bnd.remote_repository
 repositories.remote << Buildr::Ipojo.remote_repository
 
-IPOJO_ANNOTATIONS = Buildr::Ipojo.annotation_artifact
-EVENT_ADMIN = 'org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.6.0'
-
-OSGI_CORE = 'org.apache.felix:org.osgi.core:jar:1.4.0'
-OSGI_COMPENDIUM = 'org.apache.felix:org.osgi.compendium:jar:1.4.0'
-
 KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 
 desc 'Swinkar: OSGi/Swing test framework'
 define 'swinkar' do
-  compile.with OSGI_CORE, IPOJO_ANNOTATIONS, OSGI_COMPENDIUM, EVENT_ADMIN
+  compile.with :osgi_core, :osgi_compendium, Buildr::Ipojo.annotation_artifact, :ipojo_eventadmin
   project.ipojoize!
   project.version = '1.0'
   ipr.template = _('src/etc/project-template.ipr')
+
+  compile { swung_weave_enhance }
 
   package(:bundle).tap do |bnd|
     bnd['Export-Package'] = "swinkar.*;version=#{version}"
