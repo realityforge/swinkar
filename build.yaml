@@ -1,0 +1,11 @@
+gems:
+  #- ci_reporter
+  - buildr-bnd = 0.0.4
+  - buildr-iidea = 0.0.8
+  - buildr-ipojo = 0.0.1
+  - swung-weave-buildr = 1.0.0
+
+artifacts:
+  ipojo_eventadmin: org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.6.0
+  osgi_core: org.apache.felix:org.osgi.core:jar:1.4.0
+  osgi_compendium: org.apache.felix:org.osgi.compendium:jar:1.4.0
