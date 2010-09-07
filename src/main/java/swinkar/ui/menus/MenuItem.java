@@ -1,7 +1,9 @@
 package swinkar.ui.menus;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -11,13 +13,14 @@ import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.annotations.Updated;
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher;
 import org.osgi.framework.BundleContext;
 import swinkar.SwinkarUtil;
 
 @Component( factory_method = "create" )
 @Provides( specifications={ JMenuItem.class, JComponent.class})
 public class MenuItem
-  extends JMenuItem
+  extends JMenuItem implements ActionListener
 {
   @ServiceProperty( name = "parentMenu" )
   @Property( name = "parentMenu", mandatory = true )
@@ -33,11 +36,11 @@ public class MenuItem
   @Property( name = "actionCommand", mandatory = true )
   private String m_actionCommand;
 
-  @Requires( id = "actionListener", proxy = false, optional = true, filter="(match=nothing)" )
-  private ActionListener m_actionListener;
-
   @Requires( id = "preparer", proxy = false, optional = true, nullable = false, filter="(match=nothing)" )
   private MenuItemPreparer m_preparer;
+
+  @org.apache.felix.ipojo.handlers.event.Publisher( name = "menuItemPublisher", synchronous = false, topics = "menuItem/actionPerformed")
+  private Publisher m_publisher;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
   public static MenuItem create( )
@@ -47,9 +50,20 @@ public class MenuItem
       @Override
       public MenuItem call() throws Exception
       {
-        return new MenuItem( );
+        MenuItem mi = new MenuItem( );
+        mi.addActionListener( mi );
+        return mi;
       }
     } );
+  }
+
+  @Override
+  public void actionPerformed( final ActionEvent actionEvent )
+  {
+    System.out.println( "m_actionCommand = " + m_actionCommand );
+    final Properties data = new Properties();
+    data.setProperty("command", m_actionCommand );
+    m_publisher.send( data );
   }
 
   @Updated
@@ -61,11 +75,6 @@ public class MenuItem
       {
         setActionCommand( m_actionCommand );
         setText( m_label );
-        for ( ActionListener listener : getActionListeners() )
-        {
-          removeActionListener( listener );
-        }
-        addActionListener( m_actionListener );
       }
     };
     SwinkarUtil.invokeAndWait( runnable );

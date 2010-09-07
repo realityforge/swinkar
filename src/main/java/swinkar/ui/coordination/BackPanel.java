@@ -1,12 +1,20 @@
 package swinkar.ui.coordination;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Properties;
 import java.util.concurrent.Callable;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
+import org.apache.felix.ipojo.handlers.event.Subscriber;
+import org.apache.felix.ipojo.handlers.event.publisher.Publisher;
+import org.osgi.service.event.Event;
 import swinkar.SwinkarUtil;
 
 @Component( factory_method = "create", architecture = true, immediate = true, managedservice = "BackPanel" )
@@ -22,6 +30,22 @@ public class BackPanel
 
   private Boolean _isOink;
 
+  private JLabel m_westLabel;
+  private JLabel m_centerLabel;
+  private JLabel m_eastLabel;
+
+  private MouseListener m_mouseListener;
+
+  @org.apache.felix.ipojo.handlers.event.Publisher( name = "backPanelPublisher", synchronous = false, topics = "backPanel/popupTriggered")
+  private Publisher m_popupTriggerPublisher;
+
+  protected BackPanel() {
+    createComponents();
+    layoutComponents();
+    createListeners();
+    installListeners();
+  }
+
   public static BackPanel create()
   {
     return SwinkarUtil.invokeAndWait( new Callable<BackPanel>()
@@ -30,14 +54,84 @@ public class BackPanel
       public BackPanel call()
       {
         System.out.println( "Constructing a ScreenContainer" );
-        final BackPanel screenContainer = new BackPanel();
-        screenContainer.setLayout( new BorderLayout() );
-        screenContainer.add( new JLabel( "left" ), BorderLayout.WEST );
-        screenContainer.add( new JLabel( "right" ), BorderLayout.EAST );
-        screenContainer.add( new JLabel( "middle" ), BorderLayout.CENTER );
+        final BackPanel screenContainer = new BackPanel();        
         return screenContainer;
       }
     } );
+  }
+
+  private void createComponents() {
+    m_westLabel = new JLabel( "Left" );
+    m_centerLabel = new JLabel( "Middle" );
+    m_eastLabel = new JLabel( "Right" );
+  }
+
+  private void layoutComponents() {
+    setLayout( new BorderLayout() );
+    add(m_westLabel, BorderLayout.WEST);
+    add(m_centerLabel, BorderLayout.CENTER);
+    add(m_eastLabel, BorderLayout.EAST);
+  }
+
+  private void installListeners() {
+    m_westLabel.addMouseListener( m_mouseListener );
+    m_centerLabel.addMouseListener( m_mouseListener );
+    m_eastLabel.addMouseListener( m_mouseListener );   
+  }
+
+  private void createListeners() {
+    m_mouseListener = new MouseAdapter() {
+
+      @Override
+      public void mouseClicked( final MouseEvent mouseEvent )
+      {
+        System.out.println( "Label Clicked" );
+        if (mouseEvent.isPopupTrigger()) {
+          mayShowPopup( mouseEvent );
+        }        
+      }
+
+      @Override
+      public void mousePressed( final MouseEvent mouseEvent )
+      {
+        mayShowPopup( mouseEvent );
+      }
+
+      @Override
+      public void mouseReleased( final MouseEvent mouseEvent )
+      {
+        mayShowPopup( mouseEvent );
+      }
+
+      private void mayShowPopup(MouseEvent mouseEvent) {
+        if (mouseEvent.isPopupTrigger()) {
+          System.out.println( "Popup Triggered" );
+          final Properties data = new Properties();
+          data.put( "mouseEvent", mouseEvent );
+          data.put( "source", mouseEvent.getSource() );
+
+          final JComponent source = (JComponent) mouseEvent.getSource();
+          final String context = source instanceof JLabel ? ((JLabel) source).getText() : null;
+
+          data.put( "context", context );
+
+          String menuId;
+          if ( source == m_centerLabel )
+          {
+            menuId = "BackPanelMiddleMenu";
+          }
+          else
+          {
+            menuId = "BackPanelSideMenu";
+          }
+
+          data.put( "menuId", menuId );
+          m_popupTriggerPublisher.send( data );
+        }
+      }
+    };
+
+
   }
 
   public Boolean isOinking()
@@ -50,13 +144,27 @@ public class BackPanel
     return Boolean.FALSE == _isOink;
   }
 
-  public void oink()
+  @Subscriber( name = "oinkPerformer",
+               topics = "menuItem/actionPerformed",
+               filter = "(command=oink)")
+  public void oink( Event e )
   {
-    _isOink = Boolean.TRUE;
-    ( (JLabel) getComponent( 2 ) ).setText( "OINK!");
+    SwinkarUtil.invokeAndWait( new Callable() {
+      @Override
+      public Object call()
+        throws Exception
+      {
+        _isOink = Boolean.TRUE;
+        ( (JLabel) getComponent( 2 ) ).setText( "OINK!");
+        return null;
+      }
+    });
   }
 
-  public void moo()
+  @Subscriber( name = "mooPerformer",
+               topics = "menuItem/actionPerformed",
+               filter = "(command=moo)")
+  public void moo( Event e )
   {
     _isOink = Boolean.FALSE;
     ( (JLabel) getComponent( 2 ) ).setText( "MOO!");

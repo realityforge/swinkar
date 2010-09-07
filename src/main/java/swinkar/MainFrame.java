@@ -15,6 +15,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.event.Event;
 import swinkar.ui.ScreenManager;
 
 @Component( architecture = true, immediate = true, managedservice = "MainFrame", factory_method = "create" )
@@ -101,6 +102,14 @@ public class MainFrame
     };
     SwinkarUtil.invokeAndWait( runnable );
   }
+
+  @Subscriber( name = "terminator",
+               topics = "menuItem/actionPerformed",
+               filter = "(command=shutdown)")
+  public void terminate( Event e ) {
+    stop();
+  }
+
 
   @Override
   public void actionPerformed( final ActionEvent e )

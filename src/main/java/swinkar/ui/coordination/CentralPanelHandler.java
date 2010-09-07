@@ -11,9 +11,9 @@ import swinkar.ui.menus.MenuItem;
 import swinkar.ui.menus.MenuItemPreparer;
 
 @Component( immediate = true )
-@Provides( specifications={ MenuItemPreparer.class, ActionListener.class } )
+@Provides( specifications={ MenuItemPreparer.class } )
 public class CentralPanelHandler
-  implements MenuItemPreparer, ActionListener
+  implements MenuItemPreparer
 {
   @Requires( proxy = false )
   private BackPanel _backPanel;
@@ -27,19 +27,6 @@ public class CentralPanelHandler
     if ( "Say Moo!".equals( item.getLabelProperty() ))
     {
       item.setEnabled( !_backPanel.isMooing() );
-    }
-  }
-
-  @Override
-  public void actionPerformed( final ActionEvent e )
-  {
-    if ( "oink".equals( e.getActionCommand() ) )
-    {
-      _backPanel.oink();
-    }
-    else if ( "moo".equals( e.getActionCommand() ) )
-    {
-      _backPanel.moo();
     }
   }
 }

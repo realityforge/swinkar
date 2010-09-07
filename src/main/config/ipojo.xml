@@ -17,8 +17,7 @@
   xmlns:composite="org.apache.felix.ipojo.composite"
   xmlns:wbp="org.apache.felix.ipojo.whiteboard-pattern"
   xmlns:ev="org.apache.felix.ipojo.event-admin"
-  xmlns:jmx="org.apache.felix.ipojo.jmx"
-  >
+  xmlns:jmx="org.apache.felix.ipojo.jmx">
 
   <instance component="swinkar.MainFrame" name="mainFrame"/>
   <instance component="swinkar.TitleChanger"/>
@@ -52,6 +51,13 @@
     <property name="displayRank" value="1"/>
   </instance>
 
+  <instance component="swinkar.ui.menus.Menu">
+    <property name="menuId" value="File.Sub1"/>
+    <property name="parentMenu" value="Top.File"/>
+    <property name="label" value="Sub Menu"/>
+    <property name="displayRank" value="1"/>
+  </instance>
+
   <instance component="swinkar.ui.menus.MenuItem" name="oinkItem">
     <property name="parentMenu" value="File.Sub1"/>
     <property name="label" value="Say Oink!"/>
@@ -59,7 +65,7 @@
     <property name="actionCommand" value="oink"/>
     <property name="requires.filters">
       <property name="preparer" value="(instance.name=oinkHandler)"/>
-      <property name="actionListener" value="(instance.name=oinkHandler)"/>
+      <!--<property name="actionListener" value="(instance.name=oinkHandler)"/>-->
     </property>
   </instance>
 
@@ -70,7 +76,6 @@
     <property name="actionCommand" value="moo"/>
     <property name="requires.filters">
       <property name="preparer" value="(instance.name=oinkHandler)"/>
-      <property name="actionListener" value="(instance.name=oinkHandler)"/>
     </property>
   </instance>
 
@@ -84,9 +89,6 @@
     <property name="label" value="Shutdown"/>
     <property name="displayRank" value="3"/>
     <property name="actionCommand" value="shutdown"/>
-    <property name="requires.filters">
-      <property name="actionListener" value="(instance.name=mainFrame)"/>
-    </property>
   </instance>
 
   <instance component="swinkar.ui.menus.Menu">
@@ -95,4 +97,41 @@
     <property name="label" value="Window"/>
     <property name="displayRank" value="15"/>
   </instance>
+
+  <instance component="swinkar.ui.menus.PopupMenu">
+    <property name="menuId" value="BackPanelMiddleMenu" />
+  </instance>
+
+  <instance component="swinkar.ui.menus.PopupMenu">
+    <property name="menuId" value="BackPanelSideMenu" />
+  </instance>
+
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="BackPanelMiddleMenu"/>
+    <property name="label" value="Menu Item 1"/>
+    <property name="displayRank" value="1"/>
+    <property name="actionCommand" value="moo"/>
+  </instance>
+
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="BackPanelMiddleMenu"/>
+    <property name="label" value="Menu Item 2"/>
+    <property name="displayRank" value="2"/>
+    <property name="actionCommand" value="oink"/>
+  </instance>
+
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="BackPanelMiddleMenu"/>
+    <property name="label" value="Menu Item 3"/>
+    <property name="displayRank" value="3"/>
+    <property name="actionCommand" value="shutdown"/>
+  </instance>
+
+  <instance component="swinkar.ui.menus.MenuItem">
+    <property name="parentMenu" value="BackPanelSideMenu"/>
+    <property name="label" value="Menu Side 1"/>
+    <property name="displayRank" value="1"/>
+    <property name="actionCommand" value="moo"/>
+  </instance>
+
 </ipojo>
