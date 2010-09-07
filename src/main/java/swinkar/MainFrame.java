@@ -16,6 +16,7 @@ import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
+import org.realityforge.swung_weave.RunInEDT;
 import swinkar.ui.ScreenManager;
 
 @Component( architecture = true, immediate = true, managedservice = "MainFrame", factory_method = "create" )
@@ -31,87 +32,64 @@ public class MainFrame
   private int m_height = 800;
 
   //@Requires( proxy = false, filter = "")
-  @Requires( proxy = false, filter = "(&(objectClass=javax.swing.JMenuBar)(menuId=TopLevelMenu))")
+  @Requires( proxy = false, filter = "(&(objectClass=javax.swing.JMenuBar)(menuId=TopLevelMenu))" )
   private JMenuBar m_menuBar;
 
-  @Requires( proxy = false, filter = "(role=ScreenManager)")
+  @Requires( proxy = false, filter = "(role=ScreenManager)" )
   private JPanel m_screenManager;
 
+  @RunInEDT
   public static MainFrame create()
   {
-    return SwinkarUtil.invokeAndWait( new Callable<MainFrame>()
-    {
-      @Override
-      public MainFrame call()
-        throws Exception
-      {
-        System.out.println( "Constructing a MainFrame" );
-        return new MainFrame();
-      }
-    } );
+    System.out.println( "Constructing a MainFrame" );
+    return new MainFrame();
   }
 
   @Subscriber( name = "MainFrame.Title",
                topics = "MainFrame/Title",
                data_key = "title",
                data_type = "java.lang.String" )
+  @RunInEDT
   public void updateTitle( final String title )
   {
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        setTitle( title );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    setTitle( title );
   }
 
   @Validate
+  @RunInEDT
   public void start()
     throws Exception
   {
-    final Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        System.out.println( "Running a main frame!" );
-        setPreferredSize( new Dimension( m_width, m_height ) );
-        setSize( new Dimension( m_width, m_height ) );
-        setJMenuBar( m_menuBar );
-        setContentPane( m_screenManager );
-        pack();
-        setTitle( "My Initial Title" );
-        MainFrame.this.repaint();
-        setVisible( true );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    System.out.println( "Running a main frame!" );
+    setPreferredSize( new Dimension( m_width, m_height ) );
+    setSize( new Dimension( m_width, m_height ) );
+    setJMenuBar( m_menuBar );
+    setContentPane( m_screenManager );
+    pack();
+    setTitle( "My Initial Title" );
+    MainFrame.this.repaint();
+    setVisible( true );
   }
 
   @Invalidate
+  @RunInEDT
   public void stop()
   {
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        setVisible( false );
-        dispose();
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    setVisible( false );
+    dispose();
   }
 
   @Subscriber( name = "terminator",
                topics = "menuItem/actionPerformed",
-               filter = "(command=shutdown)")
-  public void terminate( Event e ) {
+               filter = "(command=shutdown)" )
+  public void terminate( Event e )
+  {
     stop();
   }
 
 
   @Override
+  @RunInEDT
   public void actionPerformed( final ActionEvent e )
   {
     setVisible( false );

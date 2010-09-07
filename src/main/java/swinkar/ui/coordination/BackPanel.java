@@ -5,7 +5,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +14,7 @@ import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.handlers.event.Subscriber;
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher;
 import org.osgi.service.event.Event;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( factory_method = "create", architecture = true, immediate = true, managedservice = "BackPanel" )
 @Provides( specifications = { BackPanel.class, JPanel.class } )
@@ -36,59 +35,60 @@ public class BackPanel
 
   private MouseListener m_mouseListener;
 
-  @org.apache.felix.ipojo.handlers.event.Publisher( name = "backPanelPublisher", synchronous = false, topics = "backPanel/popupTriggered")
+  @org.apache.felix.ipojo.handlers.event.Publisher( name = "backPanelPublisher", synchronous = false,
+                                                    topics = "backPanel/popupTriggered" )
   private Publisher m_popupTriggerPublisher;
 
-  protected BackPanel() {
+  protected BackPanel()
+  {
     createComponents();
     layoutComponents();
     createListeners();
     installListeners();
   }
 
+  @RunInEDT
   public static BackPanel create()
   {
-    return SwinkarUtil.invokeAndWait( new Callable<BackPanel>()
-    {
-      @Override
-      public BackPanel call()
-      {
-        System.out.println( "Constructing a ScreenContainer" );
-        final BackPanel screenContainer = new BackPanel();        
-        return screenContainer;
-      }
-    } );
+    System.out.println( "Constructing a ScreenContainer" );
+    return new BackPanel();
   }
 
-  private void createComponents() {
+  private void createComponents()
+  {
     m_westLabel = new JLabel( "Left" );
     m_centerLabel = new JLabel( "Middle" );
     m_eastLabel = new JLabel( "Right" );
   }
 
-  private void layoutComponents() {
+  private void layoutComponents()
+  {
     setLayout( new BorderLayout() );
-    add(m_westLabel, BorderLayout.WEST);
-    add(m_centerLabel, BorderLayout.CENTER);
-    add(m_eastLabel, BorderLayout.EAST);
+    add( m_westLabel, BorderLayout.WEST );
+    add( m_centerLabel, BorderLayout.CENTER );
+    add( m_eastLabel, BorderLayout.EAST );
   }
 
-  private void installListeners() {
+  private void installListeners()
+  {
     m_westLabel.addMouseListener( m_mouseListener );
     m_centerLabel.addMouseListener( m_mouseListener );
-    m_eastLabel.addMouseListener( m_mouseListener );   
+    m_eastLabel.addMouseListener( m_mouseListener );
   }
 
-  private void createListeners() {
-    m_mouseListener = new MouseAdapter() {
+  private void createListeners()
+  {
+    m_mouseListener = new MouseAdapter()
+    {
 
       @Override
       public void mouseClicked( final MouseEvent mouseEvent )
       {
         System.out.println( "Label Clicked" );
-        if (mouseEvent.isPopupTrigger()) {
+        if ( mouseEvent.isPopupTrigger() )
+        {
           mayShowPopup( mouseEvent );
-        }        
+        }
       }
 
       @Override
@@ -103,15 +103,17 @@ public class BackPanel
         mayShowPopup( mouseEvent );
       }
 
-      private void mayShowPopup(MouseEvent mouseEvent) {
-        if (mouseEvent.isPopupTrigger()) {
+      private void mayShowPopup( MouseEvent mouseEvent )
+      {
+        if ( mouseEvent.isPopupTrigger() )
+        {
           System.out.println( "Popup Triggered" );
           final Properties data = new Properties();
           data.put( "mouseEvent", mouseEvent );
           data.put( "source", mouseEvent.getSource() );
 
           final JComponent source = (JComponent) mouseEvent.getSource();
-          final String context = source instanceof JLabel ? ((JLabel) source).getText() : null;
+          final String context = source instanceof JLabel ? ( (JLabel) source ).getText() : null;
 
           data.put( "context", context );
 
@@ -146,27 +148,21 @@ public class BackPanel
 
   @Subscriber( name = "oinkPerformer",
                topics = "menuItem/actionPerformed",
-               filter = "(command=oink)")
+               filter = "(command=oink)" )
+  @RunInEDT
   public void oink( Event e )
   {
-    SwinkarUtil.invokeAndWait( new Callable() {
-      @Override
-      public Object call()
-        throws Exception
-      {
-        _isOink = Boolean.TRUE;
-        ( (JLabel) getComponent( 2 ) ).setText( "OINK!");
-        return null;
-      }
-    });
+    _isOink = Boolean.TRUE;
+    ( (JLabel) getComponent( 2 ) ).setText( "OINK!" );
   }
 
   @Subscriber( name = "mooPerformer",
                topics = "menuItem/actionPerformed",
-               filter = "(command=moo)")
+               filter = "(command=moo)" )
+  @RunInEDT
   public void moo( Event e )
   {
     _isOink = Boolean.FALSE;
-    ( (JLabel) getComponent( 2 ) ).setText( "MOO!");
+    ( (JLabel) getComponent( 2 ) ).setText( "MOO!" );
   }
 }
