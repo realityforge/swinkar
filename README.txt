@@ -49,3 +49,4 @@ This is project for testing out swing in an OSGi context.
 * Figure out how we are going to handle policy of dependccies - make em static by default?
 * Update buildr-ipojo plugin to use ipojo 1.6.4. Also update it so that it does byte code manipulation
   in the same way that swung_weave runs 
+* Configure runtime with "-Dfelix.log.level=4" for better cnfe exceptions???
