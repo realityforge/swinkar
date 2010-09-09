@@ -9,3 +9,9 @@ artifacts:
   ipojo_eventadmin: org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.6.0
   osgi_core: org.apache.felix:org.osgi.core:jar:1.4.0
   osgi_compendium: org.apache.felix:org.osgi.compendium:jar:1.4.0
+
+remote:
+ - http://www.stocksoftware.com.au/repositories/external
+ - https://repository.apache.org/content/repositories/releases
+ - http://repository.springsource.com/maven/bundles/external
+ - http://repository.code-house.org/content/repositories/release
