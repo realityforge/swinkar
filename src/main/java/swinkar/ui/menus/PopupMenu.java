@@ -2,10 +2,8 @@ package swinkar.ui.menus;
 
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
@@ -16,7 +14,7 @@ import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.event.Event;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, managedservice = "PopupMenu", factory_method = "create" )
 @Provides( specifications = { JMenu.class, JPopupMenu.class } )
@@ -35,18 +33,10 @@ public class PopupMenu
   private final MenuSupport m_menuSupport;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
+  @RunInEDT
   public static PopupMenu create( final BundleContext bundleContext )
   {
-    return SwinkarUtil.invokeAndWait( new Callable<PopupMenu>()
-    {
-      @Override
-      public PopupMenu call()
-        throws Exception
-      {
-        final PopupMenu pm = new PopupMenu( bundleContext );
-        return pm;
-      }
-    } );
+    return new PopupMenu( bundleContext );
   }
 
   protected PopupMenu( final BundleContext context )
@@ -87,16 +77,10 @@ public class PopupMenu
   }
 
 
+  @RunInEDT
   private void showInEDT( final JComponent source, final MouseEvent me )
   {
-    SwinkarUtil.invokeAndWait( new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        show( source, me.getX(), me.getY() );
-      }
-    } );
+    show( source, me.getX(), me.getY() );
   }
 
   @Override

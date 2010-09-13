@@ -1,7 +1,6 @@
 package swinkar.ui;
 
 import java.awt.CardLayout;
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import org.apache.felix.ipojo.annotations.Component;
@@ -10,7 +9,7 @@ import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, factory_method = "create" )
 @Wbp( filter = "(&(objectClass=javax.swing.JPanel)(role=Screen)(screenName=*))",
@@ -25,18 +24,11 @@ public class ScreenManager
   @ServiceProperty(name="role", value = "ScreenManager")
   private String role;
 
+  @RunInEDT
   public static ScreenManager create( final BundleContext bundleContext )
   {
-    return SwinkarUtil.invokeAndWait( new Callable<ScreenManager>()
-    {
-      @Override
-      public ScreenManager call()
-        throws Exception
-      {
-        System.out.println( "Constructing a ScreenManager" );
-        return new ScreenManager( bundleContext );
-      }
-    } );
+    System.out.println( "Constructing a ScreenManager" );
+    return new ScreenManager( bundleContext );
   }
 
   public ScreenManager( final BundleContext bundleContext )

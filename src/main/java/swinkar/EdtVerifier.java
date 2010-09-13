@@ -12,6 +12,7 @@ import org.apache.felix.ipojo.handlers.jmx.Config;
 import org.realityforge.swung_weave.DispatchUtil;
 import org.realityforge.swung_weave.EDTViolation;
 import org.realityforge.swung_weave.EDTViolationListener;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, managedservice = "EDT_Verifier", architecture = true, factory_method = "create" )
 @Config( domain = "swinkar" )
@@ -26,16 +27,10 @@ public class EdtVerifier
   @Property( name = "active", value = "true" )
   private boolean m_active = true;
 
+  @RunInEDT
   public static EdtVerifier create()
   {
-    return SwinkarUtil.invokeAndWait( new Callable<EdtVerifier>()
-    {
-      @Override
-      public EdtVerifier call() throws Exception
-      {
-        return new EdtVerifier();
-      }
-    } );
+    return new EdtVerifier();
   }
 
   @Validate

@@ -1,6 +1,5 @@
 package swinkar.ui.menus;
 
-import java.util.concurrent.Callable;
 import javax.swing.JMenuBar;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
@@ -9,7 +8,7 @@ import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, architecture = true, managedservice = "MenuBar", factory_method = "create" )
 @Provides( specifications = { JMenuBar.class } )
@@ -28,16 +27,10 @@ public class MenuBar
   private String m_menuId;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
+  @RunInEDT
   public static MenuBar create( final BundleContext bundleContext )
   {
-    return SwinkarUtil.invokeAndWait( new Callable<MenuBar>()
-    {
-      @Override
-      public MenuBar call() throws Exception
-      {
-        return new MenuBar( bundleContext );
-      }
-    } );
+    return new MenuBar( bundleContext );
   }
 
   public MenuBar( final BundleContext bundleContext )
