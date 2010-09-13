@@ -9,13 +9,15 @@ import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Updated;
 import org.apache.felix.ipojo.annotations.Validate;
 import org.apache.felix.ipojo.handlers.jmx.Config;
+import org.realityforge.swung_weave.DispatchUtil;
+import org.realityforge.swung_weave.EDTViolation;
+import org.realityforge.swung_weave.EDTViolationListener;
 
 @Component( immediate = true, managedservice = "EDT_Verifier", architecture = true, factory_method = "create" )
 @Config( domain = "swinkar" )
 public class EdtVerifier
+  implements EDTViolationListener
 {
-  private CheckThreadViolationRepaintManager m_repaintManager = new CheckThreadViolationRepaintManager();
-
   @org.apache.felix.ipojo.handlers.jmx.Property( name = "fullCheck", rights = "w" )
   @Property( name = "fullCheck", value = "true" )
   private boolean m_fullCheck = true;
@@ -63,7 +65,7 @@ public class EdtVerifier
   {
     System.out.println( "EdtVerifier.setFullCheck" );
     m_fullCheck = fullCheck;
-    m_repaintManager.setFullCheck( m_fullCheck );
+    updateRepaintManager( m_active );
   }
 
   @Updated
@@ -74,17 +76,19 @@ public class EdtVerifier
 
   private void updateRepaintManager( final boolean active )
   {
-    if( active )
+    if ( active )
     {
-      setFullCheck( m_fullCheck );
-      RepaintManager.setCurrentManager( m_repaintManager );
+      DispatchUtil.installEDTViolationListener( this, m_fullCheck );
     }
     else
     {
-      if( m_repaintManager == RepaintManager.currentManager( null ) )
-      {
-        RepaintManager.setCurrentManager( null );
-      }
+      DispatchUtil.uninstallEDTViolationListener();
     }
+  }
+
+  @Override
+  public void violationOccurred( final EDTViolation violation )
+  {
+    System.err.print( violation.toString() );
   }
 }
