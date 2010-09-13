@@ -24,6 +24,7 @@ This is project for testing out swing in an OSGi context.
   be done as an annotation on the class.
 * Should be able to restrict ServiceProperty to a particular service
 * Why does bundle context have to be injected by constructor rather than by @Require .. or can it be
+* Does not handle inheritance hierarchies. Have to annotate every node in the tree!
 * Why not have a single annotation at class level that can define multiple services with possibly
   multiple properties, controls etc. Maybe define a class level @Provides such as
 
