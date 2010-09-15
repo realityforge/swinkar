@@ -6,12 +6,8 @@ require 'swung_weave_buildr'
 VERSION_NUMBER = "1.0.0"
 GROUP = "swinkar"
 
-repositories.remote << 'https://repository.apache.org/content/repositories/releases'
-repositories.remote << 'http://repository.springsource.com/maven/bundles/external'
-repositories.remote << 'http://repository.code-house.org/content/repositories/release' # OSGi - jmx RI
-
-repositories.remote << Buildr::Bnd.remote_repository
-repositories.remote << Buildr::Ipojo.remote_repository
+repositories.remote << 'http://www.stocksoftware.com.au/repositories/external'
+repositories.remote << 'http://www.stocksoftware.com.au/repositories/releases'
 
 KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 

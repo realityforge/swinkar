@@ -3,7 +3,7 @@ gems:
   - buildr-bnd = 0.0.5
   - buildr-iidea = 0.0.9
   - buildr-ipojo = 0.0.1
-  - swung-weave-buildr = 1.0.0
+  - swung-weave-buildr = 1.0.7
 
 artifacts:
   ipojo_eventadmin: org.apache.felix:org.apache.felix.ipojo.handler.eventadmin:jar:1.6.0
