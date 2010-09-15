@@ -6,9 +6,6 @@ require 'swung_weave_buildr'
 VERSION_NUMBER = "1.0.0"
 GROUP = "swinkar"
 
-repositories.remote << 'http://www.stocksoftware.com.au/repositories/external'
-repositories.remote << 'http://www.stocksoftware.com.au/repositories/releases'
-
 KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 
 desc 'Swinkar: OSGi/Swing test framework'
