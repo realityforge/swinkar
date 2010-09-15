@@ -1,14 +1,12 @@
 package swinkar.ui.menus;
 
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Property;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
-import org.osgi.framework.BundleContext;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, managedservice = "Separator", factory_method = "create" )
 @Provides( specifications = { JSeparator.class, JComponent.class } )
@@ -24,15 +22,9 @@ public class Separator
   private int m_displayRank;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
-  public static Separator create( )
+  @RunInEDT
+  public static Separator create()
   {
-    return SwinkarUtil.invokeAndWait( new Callable<Separator>()
-    {
-      @Override
-      public Separator call() throws Exception
-      {
-        return new Separator();
-      }
-    } );
+    return new Separator();
   }
 }

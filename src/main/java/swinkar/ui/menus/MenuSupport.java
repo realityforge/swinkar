@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 public class MenuSupport
 {
@@ -28,16 +28,9 @@ public class MenuSupport
     {
       return;
     }
-    final JComponent menu = (JComponent)m_bundleContext.getService( reference );
-    final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    final Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        addItem( menu, displayRank );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    final JComponent menu = (JComponent) m_bundleContext.getService( reference );
+    final int displayRank = (Integer) reference.getProperty( "displayRank" );
+    addItem( menu, displayRank );
   }
 
   public void onDeparture( final ServiceReference reference )
@@ -46,15 +39,8 @@ public class MenuSupport
     {
       return;
     }
-    final JComponent menu = (JComponent)m_bundleContext.getService( reference );
-    final Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        removeItem( menu );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    final JComponent menu = (JComponent) m_bundleContext.getService( reference );
+    removeItem( menu );
   }
 
 
@@ -65,18 +51,18 @@ public class MenuSupport
       return;
     }
     final JComponent menu = (JComponent)m_bundleContext.getService( reference );
-    final int displayRank = (Integer)reference.getProperty( "displayRank" );
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        removeItem( menu );
-        addItem( menu, displayRank );
-      }
-    };
-    SwingUtilities.invokeLater( runnable );
+    final int displayRank = (Integer) reference.getProperty( "displayRank" );
+    modifyMenuItem( menu, displayRank );
   }
 
+  @RunInEDT
+  private void modifyMenuItem( final JComponent menu, final int displayRank )
+  {
+    removeItem( menu );
+    addItem( menu, displayRank );
+  }
+
+  @RunInEDT
   private void addItem( final Component menu, final int displayRank )
   {
     int index = -1;
@@ -99,6 +85,7 @@ public class MenuSupport
     m_menuRanks.put( menu, displayRank );
   }
 
+  @RunInEDT
   private void removeItem( final Component menu )
   {
     final int count = m_menu.getMenuComponentCount();

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Properties;
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import org.apache.felix.ipojo.annotations.Component;
@@ -14,8 +13,7 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.ServiceProperty;
 import org.apache.felix.ipojo.annotations.Updated;
 import org.apache.felix.ipojo.handlers.event.publisher.Publisher;
-import org.osgi.framework.BundleContext;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( factory_method = "create" )
 @Provides( specifications={ JMenuItem.class, JComponent.class})
@@ -43,18 +41,12 @@ public class MenuItem
   private Publisher m_publisher;
 
   @SuppressWarnings( { "UnusedDeclaration" } )
-  public static MenuItem create( )
+  @RunInEDT
+  public static MenuItem create()
   {
-    return SwinkarUtil.invokeAndWait( new Callable<MenuItem>()
-    {
-      @Override
-      public MenuItem call() throws Exception
-      {
-        MenuItem mi = new MenuItem( );
-        mi.addActionListener( mi );
-        return mi;
-      }
-    } );
+    MenuItem mi = new MenuItem();
+    mi.addActionListener( mi );
+    return mi;
   }
 
   @Override
@@ -67,17 +59,12 @@ public class MenuItem
   }
 
   @Updated
+  @RunInEDT
   public void configUpdated( final Dictionary config )
   {
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        setActionCommand( m_actionCommand );
-        setText( m_label );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+
+    setActionCommand( m_actionCommand );
+    setText( m_label );
   }
 
   // Whee - ugly method, not even sure we need it in the real app, but for now

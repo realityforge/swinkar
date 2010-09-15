@@ -1,7 +1,6 @@
 package swinkar.ui.menus;
 
 import java.util.Dictionary;
-import java.util.concurrent.Callable;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
@@ -14,7 +13,7 @@ import org.apache.felix.ipojo.annotations.Updated;
 import org.apache.felix.ipojo.whiteboard.Wbp;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import swinkar.SwinkarUtil;
+import org.realityforge.swung_weave.RunInEDT;
 
 @Component( immediate = true, managedservice = "Menu", factory_method = "create" )
 @Provides( specifications = { JMenu.class, JComponent.class } )
@@ -50,29 +49,17 @@ public class Menu
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )
+  @RunInEDT
   public static Menu create( final BundleContext bundleContext )
   {
-    return SwinkarUtil.invokeAndWait( new Callable<Menu>()
-    {
-      @Override
-      public Menu call() throws Exception
-      {
-        return new Menu( bundleContext );
-      }
-    } );
+    return new Menu( bundleContext );
   }
 
   @Updated
+  @RunInEDT
   public void configUpdated( final Dictionary config )
   {
-    Runnable runnable = new Runnable()
-    {
-      public void run()
-      {
-        setText( m_label );
-      }
-    };
-    SwinkarUtil.invokeAndWait( runnable );
+    setText( m_label );
   }
 
   @SuppressWarnings( { "UnusedDeclaration" } )

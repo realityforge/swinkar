@@ -24,6 +24,7 @@ This is project for testing out swing in an OSGi context.
   be done as an annotation on the class.
 * Should be able to restrict ServiceProperty to a particular service
 * Why does bundle context have to be injected by constructor rather than by @Require .. or can it be
+* Does not handle inheritance hierarchies. Have to annotate every node in the tree!
 * Why not have a single annotation at class level that can define multiple services with possibly
   multiple properties, controls etc. Maybe define a class level @Provides such as
 
@@ -43,9 +44,7 @@ This is project for testing out swing in an OSGi context.
   See http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
 * Tests fail if non EDT access to repaint manager during testing.
   See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
-* Update to ipojo 1.6.4 - fixes several of the bugs that cropped up during experimentation
 * Swing UI testing via http://www.ibm.com/developerworks/java/library/j-swingtest/
-* Convert everything across to SwungWeave
 * Figure out how we are going to handle policy of dependccies - make em static by default?
 * Update buildr-ipojo plugin to use ipojo 1.6.4. Also update it so that it does byte code manipulation
   in the same way that swung_weave runs 
