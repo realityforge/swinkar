@@ -49,3 +49,4 @@ This is project for testing out swing in an OSGi context.
 * Update buildr-ipojo plugin to use ipojo 1.6.4. Also update it so that it does byte code manipulation
   in the same way that swung_weave runs 
 * Configure runtime with "-Dfelix.log.level=4" for better cnfe exceptions???
+* Investigate Swing UI testing via http://code.google.com/webtoolkit/tools/download-wintester.html
