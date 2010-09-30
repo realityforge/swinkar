@@ -6,9 +6,6 @@ require 'swung_weave_buildr'
 VERSION_NUMBER = "1.0.0"
 GROUP = "swinkar"
 
-repositories.remote << Buildr::Bnd.remote_repository
-repositories.remote << Buildr::Ipojo.remote_repository
-
 KARAF_DIR="../apache-karaf-2.0.1-SNAPSHOT/"
 
 desc 'Swinkar: OSGi/Swing test framework'

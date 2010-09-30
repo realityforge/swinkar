@@ -50,3 +50,4 @@ This is project for testing out swing in an OSGi context.
   in the same way that swung_weave runs 
 * Configure runtime with "-Dfelix.log.level=4" for better cnfe exceptions???
 * Consider using Mockito for mocking. See http://mockito.org/
+* Investigate Swing UI testing via http://code.google.com/webtoolkit/tools/download-wintester.html
