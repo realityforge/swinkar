@@ -41,7 +41,7 @@ This is project for testing out swing in an OSGi context.
 * Investigate the substance themes as possible base for skinning / branding app.
   https://substance.dev.java.net/see.html
 * Consider using FEST to perform GUI tests
-  See http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
+  See http://fest.easytesting.org/ AND http://docs.codehaus.org/display/FEST/Writing+EDT-safe+GUI+tests
 * Tests fail if non EDT access to repaint manager during testing.
   See http://docs.codehaus.org/display/FEST/Testing+that+access+to+Swing+components+is+done+in+the+EDT
 * Swing UI testing via http://www.ibm.com/developerworks/java/library/j-swingtest/
@@ -49,3 +49,4 @@ This is project for testing out swing in an OSGi context.
 * Update buildr-ipojo plugin to use ipojo 1.6.4. Also update it so that it does byte code manipulation
   in the same way that swung_weave runs 
 * Configure runtime with "-Dfelix.log.level=4" for better cnfe exceptions???
+* Consider using Mockito for mocking. See http://mockito.org/
